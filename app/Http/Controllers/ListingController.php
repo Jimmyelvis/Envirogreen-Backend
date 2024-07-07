@@ -20,18 +20,15 @@ class ListingController extends Controller
      */
     public function index()
     {
+        // Use pagination instead of get()
+        $perPage = 8; // Number of listings per page
         $listings = Listing::with(['user', 'fullpic', 'extrapicone', 'extrapictwo', 'extrapicthree', 'extrapicfour'])
-            ->get()
-            ->map(function ($listing) {
-                // Append file paths as new attributes
-                //    $listing->user_name = $listing->user->name ? : null;
+            ->paginate($perPage)
+            ->through(function ($listing) {
                 // Append file paths as new attributes
                 $listing->user_role = $listing->user && $listing->user->role ? $listing->user->role->name : null;
-
                 $listing->user_position = $listing->user && $listing->user->position ? $listing->user->position->name : null;
-
                 $listing->user_photo_path = $listing->user && $listing->user->photoStaff ? $listing->user->photoStaff->file : null;
-
                 $listing->fullpic_path = $listing->fullpic ? $listing->fullpic->file : null;
                 $listing->extrapicone_path = $listing->extrapicone ? $listing->extrapicone->file : null;
                 $listing->extrapictwo_path = $listing->extrapictwo ? $listing->extrapictwo->file : null;
@@ -42,11 +39,9 @@ class ListingController extends Controller
                 return $listing;
             });
 
-        return response()->json([
-            'count' => count($listings),
-            'listings' => $listings,
-        ]);
+        return response()->json($listings);
     }
+
 
 
 

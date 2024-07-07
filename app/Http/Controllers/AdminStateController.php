@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\State;
+use App\Models\State;
 
 class AdminStateController extends Controller
 {
@@ -19,7 +19,10 @@ class AdminStateController extends Controller
         //
         $states = State::all();
 
-        return view('admin.states.index', compact('states'));
+        return response()->json([
+            'count' => count($states),
+            'states' => $states,
+        ]);
     }
 
     /**

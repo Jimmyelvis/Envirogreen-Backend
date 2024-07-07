@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\City;
+use App\Models\City;
 
 class AdminCityController extends Controller
 {
@@ -17,9 +17,27 @@ class AdminCityController extends Controller
     public function index()
     {
         //
-        $cities = City::all();
+        $cities = City::all()
+            ->map(function ($city) {
+                // Append file paths as new attributes
+                $city->state_name = $city->state ? $city->state->name : null;
+                return $city;
+            });
 
-        return view('admin.cities.index', compact('cities'));
+        return response()->json([
+            'count' => count($cities),
+            'cities' => $cities,
+        ]);
+    }
+
+    public function getCitiesWithListings()
+    {
+        $cities = City::with('listings')->get();
+
+        return response()->json([
+            'count' => count($cities),
+            'cities' => $cities,
+        ]);
     }
 
     /**

@@ -11,6 +11,8 @@ use App\Http\Controllers\AdminListingsController;
 use App\Http\Controllers\AdminUsersController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\AdminCityController;
+use App\Http\Controllers\AdminStateController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -36,6 +38,12 @@ Route::get('/blogs/{id}', [BlogController::class, 'show']);
 // ----- Staff routes
 Route::get('/staff', [StaffController::class, 'index']);
 Route::get('/staff/{id}', [StaffController::class, 'show']);
+
+// ----- City routes
+Route::get('/cities', [AdminCityController::class, 'index']);
+
+// ----- State routes
+Route::get('/states', [AdminStateController::class, 'index']);
 
 
 
