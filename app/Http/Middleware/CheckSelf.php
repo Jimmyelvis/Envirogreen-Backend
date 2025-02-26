@@ -24,7 +24,7 @@ class CheckSelf
         }
 
         // create roles array
-        $rolesArray = array('Admin', 'SuperAdmin');
+        $rolesArray = array('Admin', 'SuperAdmin', 'Founder');
         $incomingRole = array(Auth::user()->role->name);
 
         $userId = $request->route($userIdParameter);

@@ -9,4 +9,9 @@ class BlogCategory extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function blogPosts()
+    {
+        return $this->hasMany(BlogPost::class, 'blogcat_id', 'id');
+    }
 }

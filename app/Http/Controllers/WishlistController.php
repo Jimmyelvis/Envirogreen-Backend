@@ -18,7 +18,7 @@ class WishlistController extends Controller
     public function UserWishlist(){
 
         try {
-            $wishlist = Wishlist::where('wishlists.user_id', Auth::id())
+            $wishlist = Wishlist::where('wishlists.user_id', Auth::user()->id)
                 ->join('listings', 'listings.id', '=', 'wishlists.property_id')
                 ->select('listings.*', 'wishlists.*') // Specify columns if needed to avoid fetching unnecessary data
                 ->get();
@@ -26,7 +26,6 @@ class WishlistController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
-
 
 
 
@@ -55,7 +54,7 @@ class WishlistController extends Controller
 
         if(Auth::check()){
 
-            $exists = Wishlist::where('user_id',Auth::id())->where('property_id',$property_id)->first();
+            $exists = Wishlist::where('user_id', Auth::user()->id)->where('property_id',$property_id)->first();
 
             if (!$exists) {
                 Wishlist::insert([
@@ -73,6 +72,27 @@ class WishlistController extends Controller
         }
 
 
+    } // End Method
+
+    public function removeFromWishlist($property_id)
+    {
+        if (Auth::check()) {
+            try {
+                $deleted = Wishlist::where('user_id', Auth::id())
+                    ->where('property_id', $property_id)
+                    ->delete();
+
+                if ($deleted) {
+                    return response()->json(['success' => 'Successfully removed from your wishlist']);
+                } else {
+                    return response()->json(['error' => 'Item not found in your wishlist'], 404);
+                }
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'An error occurred while removing the item'], 500);
+            }
+        } else {
+            return response()->json(['error' => 'Please login to your account first'], 401);
+        }
     } // End Method
 
 }

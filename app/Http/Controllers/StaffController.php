@@ -86,6 +86,7 @@ class StaffController extends Controller
                 'twitter' => $user->twitter,
                 'bio' => $user->bio,
                 'role_name' => $user->role ? $user->role->name : null,
+                'role_id' => $user->role ? $user->role->id : null,
                 'position_name' => $user->position ? $user->position->name : null,
                 'photo_path' => $user->photoStaff ? $user->photoStaff->file : null,
                 'listings' => $user->listings->map(function ($listing) {

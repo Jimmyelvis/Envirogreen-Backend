@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator; // Add this line
 
 use App\Http\Requests;
 use App\Models\City;
+use App\Models\State;
+use App\http\Resources\SearchresultsResource;
 
 class AdminCityController extends Controller
 {
@@ -14,21 +17,26 @@ class AdminCityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
     public function index()
     {
-        //
-        $cities = City::all()
+        // Retrieve and sort cities with their associated states
+        $cities = City::with('state')
+            ->orderBy('name')
+            ->get()
             ->map(function ($city) {
-                // Append file paths as new attributes
+                // Append state name as a new attribute
                 $city->state_name = $city->state ? $city->state->name : null;
                 return $city;
             });
 
         return response()->json([
-            'count' => count($cities),
+            'count' => $cities->count(),
             'cities' => $cities,
         ]);
     }
+
 
     public function getCitiesWithListings()
     {
@@ -39,6 +47,33 @@ class AdminCityController extends Controller
             'cities' => $cities,
         ]);
     }
+
+    public function getCitiesFromState($stateId)
+    {
+        $cities = City::where('state_id', $stateId)
+            ->orderBy('name', 'asc')
+            ->get();
+
+        return response()->json([
+            'count' => count($cities),
+            'cities' => $cities,
+        ]);
+    }
+
+    public function getCitiesFromQuery($query)
+    {
+        $cities = City::where('name', 'like', '%' . $query . '%')
+            ->orderBy('name', 'asc')
+            ->get();
+
+        return response()->json([
+            'count' => count($cities),
+            'cities' => $cities,
+            'query' => $query,
+        ]);
+    }
+
+    // get cities from query and the listings associated with them, and the count of listings
 
     /**
      * Show the form for creating a new resource.
@@ -60,10 +95,30 @@ class AdminCityController extends Controller
     public function store(Request $request)
     {
 
-        City::create($request->all());
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'state_id' => 'required|exists:states,id'
+        ]);
 
-        return redirect('/admin/cities');
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors()->all()
+            ], 422);
+        }
 
+        try {
+            $city = City::firstOrCreate([
+                'name' => $request->name,
+                'state_id' => $request->state_id
+            ]);
+
+            return response()->json([
+                'message' => 'City added successfully',
+                'city' => $city
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**

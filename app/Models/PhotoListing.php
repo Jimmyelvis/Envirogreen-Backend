@@ -22,4 +22,10 @@ class PhotoListing extends Model
         return $this->uploads . $fullpic;
 
     }
+
+    public function listing(){
+
+        return $this->belongsTo('App\Models\Listing');
+
+    }
 }

@@ -13,13 +13,16 @@ class AuthController extends Controller
         $fields = $request->validate([
             'name' => 'required|string',
             'email' => 'required|string|unique:users,email',
-            'password' => 'required|string|confirmed'
+            'password' => 'required|string|confirmed',
+            // 'photoStaff_id' => 'nullable|integer',
         ]);
 
         $user = User::create([
             'name' => $fields['name'],
             'email' => $fields['email'],
-            'password' => bcrypt($fields['password'])
+            'password' => bcrypt($fields['password']),
+            'role_id' => 3,
+            'photo_staff_id' => 21,
         ]);
 
         $token = $user->createToken('myapptoken')->plainTextToken;
@@ -48,11 +51,24 @@ class AuthController extends Controller
             ], 401);
         }
 
+        // get photo from Modal associated with photoStaff_id and appeand to user object
+        // $user->photo = $user->photoStaff->photo;
+
+        // get the file field from the Photo Modal associated with photoStaff_id assign it to a variable called photo_path and appeand to user object
+        $user->photo_path = $user->photoStaff->file;
+
+        // get role name from Modal associated with role_id and appeand to user object
+        $user->role = $user->role->name;
+
+
+
+
         $token = $user->createToken('myapptoken')->plainTextToken;
 
         $response = [
             'user' => $user,
-            'token' => $token
+            'token' => $token,
+            'message' => 'Successfully Logged in as ' . $user->name
         ];
 
         return response($response, 201);
@@ -62,7 +78,7 @@ class AuthController extends Controller
         auth()->user()->tokens()->delete();
 
         return [
-            'message' => 'Logged out'
+            'message' => 'Successfully Logged out'
         ];
     }
 }

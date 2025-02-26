@@ -122,5 +122,15 @@ class Listing extends Model
         return $query->orderBy('price', 'asc');
       }
 
+      public function getCreatedAtFormattedAttribute()
+      {
+          return $this->created_at ? $this->created_at->format('M d, Y') : null;
+      }
+
+      public function getUpdatedAtFormattedAttribute()
+      {
+          return $this->updated_at ? $this->updated_at->format('M d, Y') : null;
+      }
+
 
 }

@@ -73,7 +73,13 @@ class User extends Authenticatable
 
 
     public function isAdmin() {
-        return in_array($this->role->name, ['web-admin', 'data-entry']);
+        return in_array($this->role->name, ['Admin', 'SuperAdmin', 'Founder']);
     }
+
+    public function blogPosts(){
+        return $this->hasMany(BlogPost::class, 'user_id', 'id');
+    }
+
+
 
 }
