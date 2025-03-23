@@ -60,6 +60,20 @@ class AuthController extends Controller
         // get role name from Modal associated with role_id and appeand to user object
         $user->role = $user->role->name;
 
+        // get position name from Modal associated with position_id and appeand to user object
+        $user->position = $user->position->name;
+
+        // get wishlist from Modal associated with user_id and appeand to user object, and get info associated with property_id
+        // $user->wishlist = $user->wishlist()->with('listing')->get();
+
+
+        // get listings from Modal associated with user_id and appeand to user object
+        // $user->listings = $user->listings;
+
+        // get blog posts from Modal associated with user_id and appeand to user object
+        // $user->blogPosts = $user->blogPosts;
+
+
 
 
 

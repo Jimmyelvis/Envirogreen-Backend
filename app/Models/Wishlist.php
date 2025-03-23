@@ -10,8 +10,12 @@ class Wishlist extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function property(){
+    public function listing(){
         return $this->belongsTo(Listing::class,'property_id','id');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class,'user_id','id');
     }
 
 

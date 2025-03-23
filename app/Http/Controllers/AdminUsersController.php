@@ -527,4 +527,48 @@ class AdminUsersController extends Controller
 
         return redirect('/admin/users');
     }
+
+    public function getCurrentUser()
+    {
+        try {
+            $user = Auth::user();
+            
+            if (!$user) {
+                return response()->json(['message' => 'Not authenticated'], 401);
+            }
+
+            $user->load(['role', 'position', 'photoStaff', 'listings', 'wishlist.listing']);
+            
+            $userData = [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'skype' => $user->skype,
+                'phone' => $user->phone,
+                'facebook' => $user->facebook,
+                'twitter' => $user->twitter,
+                'bio' => $user->bio,
+                'role_name' => $user->role?->name,
+                'position_name' => $user->position?->name,
+                'photo_path' => $user->photoStaff?->file,
+                'listings' => $user->listings->map(fn($listing) => [
+                    'id' => $listing->id,
+                    'street' => $listing->street,
+                    'city_name' => $listing->city?->name,
+                    'state_name' => $listing->state?->name,
+                    'price' => $listing->price
+                ]),
+                'wishlist' => $user->wishlist->map(fn($item) => [
+                    'id' => $item->listing->id,
+                    'street' => $item->listing->street,
+                    'price' => $item->listing->price,
+                    'main_photo' => $item->listing->fullpic?->file
+                ])
+            ];
+
+            return response()->json(['user' => $userData]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 }

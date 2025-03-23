@@ -80,6 +80,10 @@ class User extends Authenticatable
         return $this->hasMany(BlogPost::class, 'user_id', 'id');
     }
 
+    public function wishlist(){
+        return $this->hasMany(Wishlist::class, 'user_id', 'id');
+    }
+
 
 
 }

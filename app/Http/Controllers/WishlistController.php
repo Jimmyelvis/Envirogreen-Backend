@@ -29,27 +29,11 @@ class WishlistController extends Controller
 
 
 
-        // $wishlist = Wishlist::where('user_id',Auth::id())
-        //                     ->join('listings','listings.id','=','wishlists.property_id')
-        //                     ->get();
-        // return response()->json($wishlist);
 
 
 
     }
 
-    // public function UserWishlist(){
-    //     $wishlist = Wishlist::where('user_id',Auth::id())->get();
-    //     $data = [];
-    //     foreach ($wishlist as $key => $value) {
-    //         $data[] = Listing::where('id',$value->property_id)->first();
-    //     }
-    //     return response()->json($data);
-    // }
-
-
-
-    //
     public function AddToWishList(Request $request, $property_id){
 
         if(Auth::check()){
@@ -62,7 +46,10 @@ class WishlistController extends Controller
                 'property_id' => $property_id,
                 'created_at' => Carbon::now()
                 ]);
-                return response()->json(['success' => 'Successfully Added On Your Wishlist']);
+                return response()->json(
+                    [
+                        'success' => 'Successfully Added On Your Wishlist'
+                    ]);
             }else{
                 return response()->json(['error' => 'This Property Has Already in your WishList']);
             }
@@ -72,7 +59,7 @@ class WishlistController extends Controller
         }
 
 
-    } // End Method
+    }
 
     public function removeFromWishlist($property_id)
     {

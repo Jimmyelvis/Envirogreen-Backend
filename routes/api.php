@@ -14,6 +14,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AdminCityController;
 use App\Http\Controllers\AdminStateController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SavedSearchController;
 use App\Http\Controllers\SettingsController;
 
 Route::get('/user', function (Request $request) {
@@ -77,6 +78,7 @@ Route::get('/admin/getstateswithlistings', [AdminListingsController::class, 'get
 Route::put('/admin/staff/{id}/role', [AdminUsersController::class, 'changeRole']);
 
 
+
 // settings routes
 Route::get('/admin/settings', [SettingsController::class, 'index']);
 Route::put('/admin/settings/changeheaderimage', [SettingsController::class, 'changeheaderimage']);
@@ -107,9 +109,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::put('/admin/staff/{id}', [AdminUsersController::class, 'update'])->middleware('check.self');
 
-    Route::post('/add-to-wishList/{property_id}', [WishlistController::class, 'AddToWishList']);
-    Route::get('/wishlist', [WishlistController::class, 'UserWishlist']);
-    Route::delete('/wishlist/{property_id}', [WishlistController::class, 'removeFromWishlist']);
+
 
     Route::post('/admin/blog/create', [BlogController::class, 'store']);
     Route::put('/admin/blog/{id}', [BlogController::class, 'update']);
@@ -122,17 +122,20 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // create a route for getting user wishlist using WishlistController
     Route::get('/user/wishlist', [WishlistController::class, 'UserWishlist']);
+    Route::post('/add-to-wishList/{property_id}', [WishlistController::class, 'AddToWishList']);
+    Route::delete('/wishlist/{property_id}', [WishlistController::class, 'removeFromWishlist']);
 
-    // // User WishlistAll Route
-    // Route::controller(WishlistController::class)->group(function () {
+    // create a route for getting user saved searches
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/user/saved-searches', [SavedSearchController::class, 'index']);
+        Route::post('/user/saved-searches', [SavedSearchController::class, 'store']);
+        Route::put('/user/saved-searches/{id}', [SavedSearchController::class, 'update']);
+        Route::delete('/user/saved-searches/{id}', [SavedSearchController::class, 'destroy']);
+    });
 
-    //     Route::get('/user/wishlist', 'UserWishlist')->name('user.wishlist');
-    //     Route::get('/get-wishlist-property', 'GetWishlistProperty');
-    //     Route::get('/wishlist-remove/{id}', 'WishlistRemove');
-    // });
+    Route::get('/current-user', [AdminUsersController::class, 'getCurrentUser'])->middleware('auth:sanctum');
+
 });
-
-
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
