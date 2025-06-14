@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('beds')->nullable();
             $table->string('price_min')->nullable();
             $table->string('price_max')->nullable();
-            $table->string('user_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('city_id')->nullable();
             $table->string('state_id')->nullable();
             $table->string('category_id')->nullable();

@@ -9,7 +9,7 @@ use App\Models\State;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
-use App\http\Resources\SearchresultsResource;
+use App\Http\Resources\SearchresultsResource;
 use Illuminate\Support\Facades\Validator;
 
 

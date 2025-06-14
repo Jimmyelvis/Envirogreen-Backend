@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Wishlist;
 use Carbon\Carbon;
 use App\Models\Listing;
+use App\Http\Resources\WishlistResource;
 
 class WishlistController extends Controller
 {
@@ -22,7 +23,7 @@ class WishlistController extends Controller
                 ->join('listings', 'listings.id', '=', 'wishlists.property_id')
                 ->select('listings.*', 'wishlists.*') // Specify columns if needed to avoid fetching unnecessary data
                 ->get();
-            return response()->json($wishlist);
+            return response()->json(WishlistResource::collection($wishlist));
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }

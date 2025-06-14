@@ -126,15 +126,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('/wishlist/{property_id}', [WishlistController::class, 'removeFromWishlist']);
 
     // create a route for getting user saved searches
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/user/saved-searches', [SavedSearchController::class, 'index']);
-        Route::post('/user/saved-searches', [SavedSearchController::class, 'store']);
-        Route::put('/user/saved-searches/{id}', [SavedSearchController::class, 'update']);
-        Route::delete('/user/saved-searches/{id}', [SavedSearchController::class, 'destroy']);
-    });
+    Route::get('/user/saved-searches', [SavedSearchController::class, 'index']);
+    Route::post('/user/saved-searches', [SavedSearchController::class, 'store']);
+    Route::put('/user/saved-searches/{id}', [SavedSearchController::class, 'update']);
+    Route::delete('/user/saved-searches/{id}', [SavedSearchController::class, 'destroy']);
 
     Route::get('/current-user', [AdminUsersController::class, 'getCurrentUser'])->middleware('auth:sanctum');
-
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
