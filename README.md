@@ -1,65 +1,97 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<p align="center"><img src="./screenshots/envirogreen-logo.png" width="400" alt="Envirogreen Logo"></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Envirogreen Backend API (Laravel 11)
 
-## About Laravel
+This repository contains the Laravel 11 backend API for the Envirogreen real estate platform. It provides RESTful API endpoints that power the Next.js 14 frontend application.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## ⚠️ Important Note
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**This backend server must be running before starting the frontend application.** The Next.js frontend depends on these API endpoints for all data operations.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Features
 
-## Learning Laravel
+- **RESTful API Architecture**: Clean API design following REST principles
+- **Authentication**: Secure user authentication with Laravel Sanctum
+- **Role-Based Access Control**: Admin, staff, and user role management
+- **Property Listings Management**: Complete CRUD operations for real estate listings
+- **Search Functionality**: Advanced search with multiple filters
+- **Blog System**: Content management for the blog section
+- **Admin Dashboard**: API endpoints for the admin control panel
+- **MySQL Database**: Robust data storage with relationships
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## API Endpoints
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+The backend provides numerous endpoints including:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Authentication (login/register)
+- Listings (search, filter, CRUD operations)
+- User management
+- Blog posts and categories
+- Admin operations
+- Wishlist functionality
+- Contact and newsletter management
 
-## Laravel Sponsors
+## Requirements
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- PHP 8.2+
+- Composer
+- MySQL 8.0+
+- Laravel 11.x
 
-### Premium Partners
+## Setup Instructions
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+1. **Clone the repository**
 
-## Contributing
+2. **Install dependencies**
+   ```
+   composer install
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. **Set up environment file**
+   ```
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-## Code of Conduct
+4. **Configure database**
+   - Edit the `.env` file with your database credentials
+   ```
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=envirogreen
+   DB_USERNAME=root
+   DB_PASSWORD=your_password
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+5. **Import database**
+   - Use the provided SQL file: `enviro-24-1-4-25.sql`
+   - Or run migrations: `php artisan migrate`
 
-## Security Vulnerabilities
+6. **Start the server**
+   ```
+   php artisan serve
+   ```
+   By default, the API will be available at `http://localhost:8000`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Connecting with the Frontend
+
+The Next.js frontend is configured to communicate with this backend API. Make sure:
+
+1. The backend server is running first
+2. The frontend's API URL is correctly pointing to this backend
+3. CORS is properly configured in both applications
+
+## API Documentation
+
+The API provides endpoints for:
+
+- `/api/listings` - Property listings management
+- `/api/auth` - User authentication
+- `/api/admin` - Admin operations
+- `/api/blogs` - Blog content management
+- `/api/wishlist` - User wishlist functionality
+- `/api/contact` - Contact form submissions
 
 ## License
 
