@@ -455,7 +455,7 @@ class BlogController extends Controller
         return response()->json([
             'message' => 'success',
             'count' => $posts->count(),
-            'posts' => BlogPostResource::collection($posts),
+            'data' => BlogPostResource::collection($posts),
             'name' =>  $name->category_name
         ]);
     }

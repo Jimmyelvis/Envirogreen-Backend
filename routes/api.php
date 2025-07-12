@@ -14,6 +14,8 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AdminCityController;
 use App\Http\Controllers\AdminStateController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\SavedSearchController;
 use App\Http\Controllers\SettingsController;
 
@@ -25,6 +27,7 @@ Route::get('/user', function (Request $request) {
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
 
 // ----- Listings routes
 Route::get('/listings/featured', [ListingController::class, 'featuredListings']);
@@ -76,6 +79,21 @@ Route::get('/admin/getcitieswithlistings', [AdminListingsController::class, 'get
 Route::get('admin/getTopCitiesWithListings', [AdminListingsController::class, 'getTopCitiesWithListings']);
 Route::get('/admin/getstateswithlistings', [AdminListingsController::class, 'getStatesWithListings']);
 Route::put('/admin/staff/{id}/role', [AdminUsersController::class, 'changeRole']);
+
+
+// contact routes
+Route::post('/contact', [ContactController::class, 'store'])->middleware(\App\Http\Middleware\ContactFormRateLimit::class);
+Route::get('/contact', [ContactController::class, 'index']);
+Route::get('/contact/{id}', [ContactController::class, 'show']);
+Route::put('/contact/{id}', [ContactController::class, 'update']);
+Route::delete('/contact/{id}', [ContactController::class, 'destroy']);
+
+// newsletter routes
+Route::post('/newsletter', [NewsletterController::class, 'store']);
+Route::get('/newsletter', [NewsletterController::class, 'index']);
+Route::get('/newsletter/{id}', [NewsletterController::class, 'show']);
+Route::put('/newsletter/{id}', [NewsletterController::class, 'update']);
+Route::delete('/newsletter/{id}', [NewsletterController::class, 'destroy']);
 
 
 

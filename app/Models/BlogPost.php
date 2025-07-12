@@ -11,6 +11,10 @@ class BlogPost extends Model
     protected $guarded = [];
     protected $dates = ['created_at', 'updated_at'];
 
+    protected $casts = [
+        'featured' => 'integer'
+    ];
+
     public function getCreatedAtFormattedAttribute()
     {
         return $this->created_at ? $this->created_at->format('M d, Y') : null;
